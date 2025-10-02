@@ -1,6 +1,8 @@
 name: C++ CI
 
-on: workflow_dispatch  # пока только ручной запуск через кнопку Run workflow
+on:
+  push:           # автозапуск при каждом push
+  pull_request:   # автозапуск на PR
 
 jobs:
   build:
