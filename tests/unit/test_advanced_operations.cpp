@@ -195,6 +195,38 @@ int main() {
         ctx.expect_nullopt(calculator::factorial(5.5));      // Половина
     });
 
+    // Тесты для функции factorial
+    RUN_TEST("factorial_normal", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(factorial(0.0), 1.0);   // 0! = 1
+        ctx.expect_optional_equal(factorial(1.0), 1.0);   // 1! = 1
+        ctx.expect_optional_equal(factorial(2.0), 2.0);    // 2! = 2
+        ctx.expect_optional_equal(factorial(3.0), 6.0);    // 3! = 6
+        ctx.expect_optional_equal(factorial(4.0), 24.0);   // 4! = 24
+        ctx.expect_optional_equal(factorial(5.0), 120.0);  // 5! = 120
+    });
+
+    RUN_TEST("factorial_larger_numbers", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(factorial(6.0), 720.0);   // 6! = 720
+        ctx.expect_optional_equal(factorial(7.0), 5040.0);  // 7! = 5040
+        ctx.expect_optional_equal(factorial(8.0), 40320.0); // 8! = 40320
+        ctx.expect_optional_equal(factorial(10.0), 3628800.0); // 10! = 3628800
+    });
+
+    RUN_TEST("factorial_invalid", [](test_utils::TestContext& ctx) {
+        ctx.expect_nullopt(factorial(-1.0));    // Отрицательное число
+        ctx.expect_nullopt(factorial(-5.0));    // Отрицательное число
+        ctx.expect_nullopt(factorial(1.5));     // Нецелое число
+        ctx.expect_nullopt(factorial(3.7));     // Нецелое число
+        ctx.expect_nullopt(factorial(0.1));      // Нецелое число
+    });
+
+    RUN_TEST("factorial_large_numbers", [](test_utils::TestContext& ctx) {
+        // Тестируем граничные случаи
+        ctx.expect_optional_equal(factorial(15.0), 1307674368000.0); // 15! = 1307674368000
+        ctx.expect_nullopt(factorial(171.0));    // Слишком большое число
+        ctx.expect_nullopt(factorial(200.0));    // Слишком большое число
+    });
+
     if (failures == 0) {
         std::cout << "✓ Все тесты продвинутых операций прошли: " << checks << " проверок\n";
     } else {
