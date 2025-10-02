@@ -19,8 +19,34 @@ std::optional<double> logb(double value, double base){
     return result;
 }
 
+std::optional<double> square_root(double value){
+    if(value < 0.0) return std::nullopt;
+    double result = std::sqrt(value);
+    if(!std::isfinite(result)) return std::nullopt;
+    return result;
+}
+
 std::optional<double> eval_line(const std::string& line){
     std::istringstream is(line);
+    
+    // Проверяем на унарную операцию sqrt
+    std::string op_str;
+    if(is >> op_str) {
+        if(op_str == "sqrt") {
+            double value;
+            if(is >> value) {
+                char extra = 0;
+                if(is >> extra) return std::nullopt; // Лишние символы
+                return square_root(value);
+            }
+            return std::nullopt; // Нет значения после sqrt
+        }
+    }
+    
+    // Возвращаемся к началу потока для бинарных операций
+    is.clear();
+    is.seekg(0);
+    
     double a=0.0,b=0.0; char op=0;
     if(!(is>>a>>op>>b)) return std::nullopt;
 
