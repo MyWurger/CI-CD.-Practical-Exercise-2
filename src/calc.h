@@ -2,12 +2,13 @@
 #include <optional>
 #include <string>
 
-int add(int a, int b);
-int sub(int a, int b);
-int mul(int a, int b);
-std::optional<int> divi(int a, int b); // nullopt при делении на 0
-std::optional<int> mod(int a, int b); // nullopt при делении на 0
-std::optional<int> powi(int base, int exponent); // nullopt при отрицательном показателе
+double add(double a, double b);
+double sub(double a, double b);
+double mul(double a, double b);
+std::optional<double> divi(double a, double b); // nullopt при делении на 0
+std::optional<double> mod(double a, double b); // nullopt при делении на 0
+std::optional<double> powd(double base, double exponent); // nullopt при недопустимом результате
+std::optional<double> logb(double value, double base); // nullopt при value<=0, base<=0 или base==1
 
-// Разбор строки вида "A <op> B", op: + - * / % ^
-std::optional<int> eval_line(const std::string& line);
+// Разбор строки вида "A <op> B", op: + - * / % ^ l
+std::optional<double> eval_line(const std::string& line);
