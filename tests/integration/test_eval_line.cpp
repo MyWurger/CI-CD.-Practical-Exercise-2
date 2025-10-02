@@ -31,6 +31,14 @@ int main() {
         ctx.expect_optional_equal(eval_line("sqrt 2.25"), 1.5);
     });
 
+    RUN_TEST("eval_line_factorial_operations", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(eval_line("factorial 0"), 1.0);   // 0! = 1
+        ctx.expect_optional_equal(eval_line("factorial 1"), 1.0);   // 1! = 1
+        ctx.expect_optional_equal(eval_line("factorial 3"), 6.0);   // 3! = 6
+        ctx.expect_optional_equal(eval_line("factorial 5"), 120.0); // 5! = 120
+        ctx.expect_optional_equal(eval_line("factorial 7"), 5040.0); // 7! = 5040
+    });
+
     RUN_TEST("eval_line_negative_numbers", [](test_utils::TestContext& ctx) {
         ctx.expect_optional_equal(eval_line("-3 + 4"), 1.0);
         ctx.expect_optional_equal(eval_line("5 - -2"), 7.0);
@@ -90,6 +98,14 @@ int main() {
         ctx.expect_nullopt(eval_line("sqrt -4"));    // Корень из отрицательного числа
         ctx.expect_nullopt(eval_line("sqrt"));       // Нет значения после sqrt
         ctx.expect_nullopt(eval_line("sqrt 4 5"));   // Лишние символы после sqrt
+    });
+
+    RUN_TEST("eval_line_invalid_factorial", [](test_utils::TestContext& ctx) {
+        ctx.expect_nullopt(eval_line("factorial -1"));    // Факториал отрицательного числа
+        ctx.expect_nullopt(eval_line("factorial 1.5"));   // Факториал нецелого числа
+        ctx.expect_nullopt(eval_line("factorial"));       // Нет значения после factorial
+        ctx.expect_nullopt(eval_line("factorial 5 6"));   // Лишние символы после factorial
+        ctx.expect_nullopt(eval_line("factorial 200"));   // Слишком большое число
     });
 
     RUN_TEST("eval_line_edge_cases", [](test_utils::TestContext& ctx) {
