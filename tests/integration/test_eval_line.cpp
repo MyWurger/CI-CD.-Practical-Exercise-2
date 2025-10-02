@@ -108,6 +108,14 @@ int main() {
         ctx.expect_nullopt(eval_line("factorial 200"));   // Слишком большое число
     });
 
+    RUN_TEST("eval_line_nan_handling", [](test_utils::TestContext& ctx) {
+        // Тестируем обработку NaN в различных операциях
+        ctx.expect_nullopt(eval_line("nan + 1"));         // NaN в бинарных операциях
+        ctx.expect_nullopt(eval_line("1 + nan"));         // NaN в бинарных операциях
+        ctx.expect_nullopt(eval_line("sqrt nan"));        // NaN в унарных операциях
+        ctx.expect_nullopt(eval_line("factorial nan"));   // NaN в унарных операциях
+    });
+
     RUN_TEST("eval_line_edge_cases", [](test_utils::TestContext& ctx) {
         ctx.expect_nullopt(eval_line(""));           // Пустая строка
         ctx.expect_nullopt(eval_line("   "));        // Только пробелы

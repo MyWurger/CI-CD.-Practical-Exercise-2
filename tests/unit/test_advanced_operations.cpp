@@ -166,6 +166,15 @@ int main() {
         ctx.expect_nullopt(factorial(200.0));    // Слишком большое число
     });
 
+    RUN_TEST("factorial_precision", [](test_utils::TestContext& ctx) {
+        // Тестируем точность для чисел с плавающей точкой
+        ctx.expect_optional_equal(factorial(5.0), 120.0);      // Точно 5.0
+        ctx.expect_optional_equal(factorial(5.0000001), 120.0); // Почти 5.0
+        ctx.expect_optional_equal(factorial(4.9999999), 120.0); // Почти 5.0
+        ctx.expect_nullopt(factorial(5.1));      // Слишком далеко от целого
+        ctx.expect_nullopt(factorial(5.5));      // Половина
+    });
+
     if (failures == 0) {
         std::cout << "✓ Все тесты продвинутых операций прошли: " << checks << " проверок\n";
     } else {
