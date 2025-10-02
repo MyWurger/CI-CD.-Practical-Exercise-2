@@ -109,6 +109,31 @@ int main() {
         ctx.expect_optional_equal(logb(0.25, 2.0), -2.0);
     });
 
+    // Тесты для функции square_root
+    RUN_TEST("square_root_normal", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(square_root(4.0), 2.0);
+        ctx.expect_optional_equal(square_root(9.0), 3.0);
+        ctx.expect_optional_equal(square_root(16.0), 4.0);
+        ctx.expect_optional_equal(square_root(0.0), 0.0);
+    });
+
+    RUN_TEST("square_root_decimal", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(square_root(2.25), 1.5);
+        ctx.expect_optional_equal(square_root(0.25), 0.5);
+        ctx.expect_optional_equal(square_root(6.25), 2.5);
+    });
+
+    RUN_TEST("square_root_negative", [](test_utils::TestContext& ctx) {
+        ctx.expect_nullopt(square_root(-1.0));
+        ctx.expect_nullopt(square_root(-4.0));
+        ctx.expect_nullopt(square_root(-0.1));
+    });
+
+    RUN_TEST("square_root_large_numbers", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(square_root(1000000.0), 1000.0);
+        ctx.expect_optional_equal(square_root(100.0), 10.0);
+    });
+
     if (failures == 0) {
         std::cout << "✓ Все тесты продвинутых операций прошли: " << checks << " проверок\n";
     } else {

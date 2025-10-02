@@ -23,6 +23,14 @@ int main() {
         ctx.expect_optional_equal(eval_line("16 l 2"), 4.0);
     });
 
+    RUN_TEST("eval_line_sqrt_operations", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(eval_line("sqrt 4"), 2.0);
+        ctx.expect_optional_equal(eval_line("sqrt 9"), 3.0);
+        ctx.expect_optional_equal(eval_line("sqrt 16"), 4.0);
+        ctx.expect_optional_equal(eval_line("sqrt 0"), 0.0);
+        ctx.expect_optional_equal(eval_line("sqrt 2.25"), 1.5);
+    });
+
     RUN_TEST("eval_line_negative_numbers", [](test_utils::TestContext& ctx) {
         ctx.expect_optional_equal(eval_line("-3 + 4"), 1.0);
         ctx.expect_optional_equal(eval_line("5 - -2"), 7.0);
@@ -75,6 +83,13 @@ int main() {
         ctx.expect_nullopt(eval_line("8 l 1"));      // Логарифм по основанию 1
         ctx.expect_nullopt(eval_line("8 l 0"));      // Логарифм по основанию 0
         ctx.expect_nullopt(eval_line("0 l 10"));     // Логарифм нуля
+    });
+
+    RUN_TEST("eval_line_invalid_sqrt", [](test_utils::TestContext& ctx) {
+        ctx.expect_nullopt(eval_line("sqrt -1"));    // Корень из отрицательного числа
+        ctx.expect_nullopt(eval_line("sqrt -4"));    // Корень из отрицательного числа
+        ctx.expect_nullopt(eval_line("sqrt"));       // Нет значения после sqrt
+        ctx.expect_nullopt(eval_line("sqrt 4 5"));   // Лишние символы после sqrt
     });
 
     RUN_TEST("eval_line_edge_cases", [](test_utils::TestContext& ctx) {

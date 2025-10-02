@@ -3,7 +3,7 @@
 #include <string>
 
 int main(){
-    std::cout << "Введите выражение в формате \"A <op> B\"\n";
+    std::cout << "Введите выражение в формате \"A <op> B\" или \"sqrt A\"\n";
     std::cout << "Поддерживаемые операции:\n";
     std::cout << "  +  сложение (A + B)\n";
     std::cout << "  -  вычитание (A - B)\n";
@@ -12,10 +12,12 @@ int main(){
     std::cout << "  %  остаток от деления (fmod)\n";
     std::cout << "  ^  возведение в степень (pow)\n";
     std::cout << "  l  логарифм по основанию B (log_B A)\n";
+    std::cout << "  sqrt  квадратный корень (sqrt A)\n";
     std::cout << "Ограничения:\n";
     std::cout << "  для / и % требуется B != 0\n";
     std::cout << "  для ^ и l результат должен быть конечным\n";
     std::cout << "  для l дополнительно A > 0, B > 0 и B != 1\n";
+    std::cout << "  для sqrt требуется A >= 0\n";
     std::cout << "> " << std::flush;
 
     std::string line;
