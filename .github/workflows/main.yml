@@ -31,3 +31,21 @@ jobs:
 
       - name: Build
         run: cmake --build build --parallel
+
+      - name: Run Tests
+        run: |
+          cd build
+          echo "=== Запуск всех тестов через CTest ==="
+          ctest --output-on-failure --verbose
+          
+          echo "=== Запуск модульных тестов ==="
+          ./test_basic_operations
+          ./test_advanced_operations
+          
+          echo "=== Запуск интеграционных тестов ==="
+          ./test_eval_line
+          
+          echo "=== Запуск тестов граничных случаев ==="
+          ./test_boundary_conditions
+          
+          echo "=== Все тесты завершены успешно! ==="

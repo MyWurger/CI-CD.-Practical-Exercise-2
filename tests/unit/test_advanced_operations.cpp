@@ -1,0 +1,119 @@
+#include "../utils/test_utils.h"
+#include "../../src/calc.h"
+#include <iostream>
+#include <cmath>
+
+int main() {
+    int failures = 0;
+    int checks = 0;
+
+    std::cout << "=== Модульные тесты: Продвинутые операции ===\n";
+
+    // Тесты для функции divi
+    RUN_TEST("divi_normal", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(divi(10.0, 2.0), 5.0);
+        ctx.expect_optional_equal(divi(15.0, 3.0), 5.0);
+        ctx.expect_optional_equal(divi(7.0, 2.0), 3.5);
+    });
+
+    RUN_TEST("divi_negative", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(divi(-10.0, 2.0), -5.0);
+        ctx.expect_optional_equal(divi(10.0, -2.0), -5.0);
+        ctx.expect_optional_equal(divi(-10.0, -2.0), 5.0);
+    });
+
+    RUN_TEST("divi_by_zero", [](test_utils::TestContext& ctx) {
+        ctx.expect_nullopt(divi(5.0, 0.0));
+        ctx.expect_nullopt(divi(-5.0, 0.0));
+        ctx.expect_nullopt(divi(0.0, 0.0));
+    });
+
+    RUN_TEST("divi_decimal", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(divi(1.0, 3.0), 1.0/3.0);
+        ctx.expect_optional_equal(divi(0.5, 0.25), 2.0);
+        ctx.expect_optional_equal(divi(0.1, 0.01), 10.0);
+    });
+
+    // Тесты для функции mod
+    RUN_TEST("mod_normal", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(mod(7.5, 2.0), 1.5);
+        ctx.expect_optional_equal(mod(10.0, 3.0), 1.0);
+        ctx.expect_optional_equal(mod(15.0, 4.0), 3.0);
+    });
+
+    RUN_TEST("mod_negative", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(mod(-7.5, 2.0), -1.5);
+        ctx.expect_optional_equal(mod(7.5, -2.0), 1.5);
+        ctx.expect_optional_equal(mod(-7.5, -2.0), -1.5);
+    });
+
+    RUN_TEST("mod_by_zero", [](test_utils::TestContext& ctx) {
+        ctx.expect_nullopt(mod(5.0, 0.0));
+        ctx.expect_nullopt(mod(-5.0, 0.0));
+        ctx.expect_nullopt(mod(0.0, 0.0));
+    });
+
+    RUN_TEST("mod_decimal", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(mod(5.7, 2.1), std::fmod(5.7, 2.1));
+        ctx.expect_optional_equal(mod(0.5, 0.3), std::fmod(0.5, 0.3));
+    });
+
+    // Тесты для функции powd
+    RUN_TEST("powd_normal", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(powd(2.0, 5.0), 32.0);
+        ctx.expect_optional_equal(powd(3.0, 2.0), 9.0);
+        ctx.expect_optional_equal(powd(4.0, 0.5), 2.0);
+    });
+
+    RUN_TEST("powd_fractional", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(powd(9.0, -0.5), 1.0 / 3.0);
+        ctx.expect_optional_equal(powd(8.0, 1.0/3.0), 2.0);
+        ctx.expect_optional_equal(powd(16.0, 0.25), 2.0);
+    });
+
+    RUN_TEST("powd_invalid", [](test_utils::TestContext& ctx) {
+        ctx.expect_nullopt(powd(-2.0, 0.5));  // Корень из отрицательного числа
+        ctx.expect_nullopt(powd(0.0, -1.0));  // Деление на ноль
+        ctx.expect_nullopt(powd(-1.0, 0.5));  // Корень из отрицательного числа
+    });
+
+    RUN_TEST("powd_zero", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(powd(0.0, 5.0), 0.0);
+        ctx.expect_optional_equal(powd(5.0, 0.0), 1.0);
+        ctx.expect_optional_equal(powd(0.0, 0.0), 1.0);
+    });
+
+    // Тесты для функции logb
+    RUN_TEST("logb_normal", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(logb(8.0, 2.0), 3.0);
+        ctx.expect_optional_equal(logb(9.0, 3.0), 2.0);
+        ctx.expect_optional_equal(logb(100.0, 10.0), 2.0);
+    });
+
+    RUN_TEST("logb_special", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(logb(1.0, 10.0), 0.0);
+        ctx.expect_optional_equal(logb(2.0, 2.0), 1.0);
+        ctx.expect_optional_equal(logb(0.5, 2.0), -1.0);
+    });
+
+    RUN_TEST("logb_invalid", [](test_utils::TestContext& ctx) {
+        ctx.expect_nullopt(logb(-1.0, 10.0));  // Отрицательное значение
+        ctx.expect_nullopt(logb(8.0, 1.0));    // Основание равно 1
+        ctx.expect_nullopt(logb(8.0, 0.0));    // Основание равно 0
+        ctx.expect_nullopt(logb(8.0, -2.0));   // Отрицательное основание
+        ctx.expect_nullopt(logb(0.0, 10.0));   // Значение равно 0
+    });
+
+    RUN_TEST("logb_decimal", [](test_utils::TestContext& ctx) {
+        ctx.expect_optional_equal(logb(2.0, 4.0), 0.5);
+        ctx.expect_optional_equal(logb(0.25, 2.0), -2.0);
+    });
+
+    if (failures == 0) {
+        std::cout << "✓ Все тесты продвинутых операций прошли: " << checks << " проверок\n";
+    } else {
+        std::cerr << "✗ " << failures << " проверок не прошли из " << checks << "\n";
+    }
+
+    return failures == 0 ? 0 : 1;
+}
