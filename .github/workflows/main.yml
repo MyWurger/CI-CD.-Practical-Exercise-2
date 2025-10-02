@@ -72,4 +72,3 @@ jobs:
         with:
           name: documentation
           path: docs/
-          retention-days: 30
