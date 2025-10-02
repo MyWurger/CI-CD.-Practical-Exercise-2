@@ -26,10 +26,31 @@ std::optional<double> square_root(double value){
     return result;
 }
 
+std::optional<double> factorial(double value){
+    // Проверяем, что значение неотрицательное
+    if(value < 0.0) return std::nullopt;
+    
+    // Проверяем, что значение целое
+    if(value != std::floor(value)) return std::nullopt;
+    
+    // Проверяем, что значение не слишком большое (факториал растет очень быстро)
+    if(value > 170.0) return std::nullopt; // 170! уже очень большое число
+    
+    // Вычисляем факториал
+    double result = 1.0;
+    for(int i = 1; i <= static_cast<int>(value); ++i) {
+        result *= i;
+        // Проверяем на переполнение
+        if(!std::isfinite(result)) return std::nullopt;
+    }
+    
+    return result;
+}
+
 std::optional<double> eval_line(const std::string& line){
     std::istringstream is(line);
     
-    // Проверяем на унарную операцию sqrt
+    // Проверяем на унарные операции sqrt и factorial
     std::string op_str;
     if(is >> op_str) {
         if(op_str == "sqrt") {
@@ -40,6 +61,15 @@ std::optional<double> eval_line(const std::string& line){
                 return square_root(value);
             }
             return std::nullopt; // Нет значения после sqrt
+        }
+        if(op_str == "factorial") {
+            double value;
+            if(is >> value) {
+                char extra = 0;
+                if(is >> extra) return std::nullopt; // Лишние символы
+                return factorial(value);
+            }
+            return std::nullopt; // Нет значения после factorial
         }
     }
     
