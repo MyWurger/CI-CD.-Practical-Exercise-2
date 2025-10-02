@@ -1,9 +1,31 @@
+/**
+ * @file test_boundary_conditions.cpp
+ * @brief Тесты граничных случаев и экстремальных значений
+ * @author Calculator Team
+ * 
+ * Этот файл содержит тесты для проверки корректности работы калькулятора
+ * в экстремальных условиях:
+ * 
+ * - Очень большие числа (порядка 1e10)
+ * - Очень малые числа (порядка 1e-10)
+ * - Бесконечность и NaN значения
+ * - Граничные случаи деления на ноль
+ * - Переполнение при вычислениях
+ * - Точность вычислений с плавающей точкой
+ * 
+ * Эти тесты критически важны для обеспечения стабильности программы.
+ */
+
 #include "../utils/test_utils.h"
 #include "../../src/calc.h"
 #include <iostream>
 #include <cmath>
 #include <limits>
 
+/**
+ * @brief Главная функция для запуска тестов граничных случаев
+ * @return Количество неудачных тестов
+ */
 int main() {
     int failures = 0;
     int checks = 0;
@@ -108,19 +130,19 @@ int main() {
     });
 
     // Тесты для строковых граничных случаев
-    RUN_TEST("eval_line_edge_cases", [](test_utils::TestContext& ctx) {
+    RUN_TEST("calculator::eval_line_edge_cases", [](test_utils::TestContext& ctx) {
         // Очень длинные числа
-        ctx.expect_optional_equal(eval_line("1e10 + 1e10"), 2e10);
-        ctx.expect_optional_equal(eval_line("1e-10 * 1e10"), 1.0);
+        ctx.expect_optional_equal(calculator::eval_line("1e10 + 1e10"), 2e10);
+        ctx.expect_optional_equal(calculator::eval_line("1e-10 * 1e10"), 1.0);
         
         // Специальные значения
-        ctx.expect_nullopt(eval_line("inf + 1"));
-        ctx.expect_nullopt(eval_line("nan + 1"));
+        ctx.expect_nullopt(calculator::eval_line("inf + 1"));
+        ctx.expect_nullopt(calculator::eval_line("nan + 1"));
         
         // Граничные случаи форматирования
-        ctx.expect_nullopt(eval_line("1.0.0 + 2"));  // Некорректное число
-        ctx.expect_nullopt(eval_line("1e + 2"));     // Некорректная экспонента
-        ctx.expect_nullopt(eval_line("1e- + 2"));    // Некорректная экспонента
+        ctx.expect_nullopt(calculator::eval_line("1.0.0 + 2"));  // Некорректное число
+        ctx.expect_nullopt(calculator::eval_line("1e + 2"));     // Некорректная экспонента
+        ctx.expect_nullopt(calculator::eval_line("1e- + 2"));    // Некорректная экспонента
     });
 
     // Тесты для производительности с большими числами

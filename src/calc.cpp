@@ -1,17 +1,43 @@
+/**
+ * @file calc.cpp
+ * @brief Реализация функций калькулятора
+ * @author Calculator Team
+ */
+
 #include "calc.h"
 #include <cmath>
 #include <sstream>
 
-double add(double a, double b){ return a + b; }
-double sub(double a, double b){ return a - b; }
-double mul(double a, double b){ return a * b; }
-std::optional<double> divi(double a, double b){ if(b == 0.0) return std::nullopt; return a / b; }
-std::optional<double> mod(double a, double b){ if(b == 0.0) return std::nullopt; return std::fmod(a, b); }
+namespace calculator {
+
+double add(double a, double b){ 
+    return a + b; 
+}
+
+double sub(double a, double b){ 
+    return a - b; 
+}
+
+double mul(double a, double b){ 
+    return a * b; 
+}
+
+std::optional<double> divi(double a, double b){ 
+    if(b == 0.0) return std::nullopt; 
+    return a / b; 
+}
+
+std::optional<double> mod(double a, double b){ 
+    if(b == 0.0) return std::nullopt; 
+    return std::fmod(a, b); 
+}
+
 std::optional<double> powd(double base, double exponent){
     double result = std::pow(base, exponent);
     if(!std::isfinite(result)) return std::nullopt;
     return result;
 }
+
 std::optional<double> logb(double value, double base){
     if(value <= 0.0 || base <= 0.0 || base == 1.0) return std::nullopt;
     double result = std::log(value) / std::log(base);
@@ -101,3 +127,5 @@ std::optional<double> eval_line(const std::string& line){
         default: return std::nullopt;
     }
 }
+
+} // namespace calculator

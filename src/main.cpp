@@ -1,7 +1,20 @@
+/**
+ * @file main.cpp
+ * @brief Главная функция калькулятора
+ * @author Calculator Team
+ */
+
 #include "calc.h"
 #include <iostream>
 #include <string>
 
+/**
+ * @brief Главная функция программы
+ * @return Код возврата: 0 - успех, 1 - ошибка ввода, 2 - ошибка вычисления
+ * 
+ * Программа принимает математическое выражение от пользователя и выводит результат.
+ * Поддерживает бинарные операции (+, -, *, /, %, ^, l) и унарные (sqrt, factorial).
+ */
 int main(){
     std::cout << "Введите выражение в формате \"A <op> B\", \"sqrt A\" или \"factorial A\"\n";
     std::cout << "Поддерживаемые операции:\n";
@@ -28,7 +41,7 @@ int main(){
         return 1;
     }
 
-    auto res = eval_line(line);
+    auto res = calculator::eval_line(line);
     if(!res){
         std::cerr << "Ошибка: некорректное выражение или недопустимая операция\n";
         return 2;
